@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robel Habte — Hard Close LLC</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Helvetica+Neue:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0A0A0C;
+    --white: #F4F2EE;
+    --mid: #4A4A4A;
+    --rule: #1E1E22;
+    --accent: #F4F2EE;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .top-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--white);
+    margin-bottom: 40px;
+    animation: expand 0.9s ease both;
+    transform-origin: left;
+  }
+
+  @keyframes expand {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  .wordmark {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: clamp(28px, 7vw, 36px);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-align: center;
+    line-height: 1;
+  }
+
+  .wordmark span {
+    font-weight: 300;
+    letter-spacing: 8px;
+  }
+
+  .tagline {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 15px;
+    color: #666;
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .name {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #333;
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  .divider {
+    width: 32px;
+    height: 1px;
+    background: #222;
+    margin: 28px 0;
+  }
+
+  .links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .link-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    border-bottom: 0.5px solid var(--rule);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .link-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: #141418;
+    transition: width 0.25s ease;
+    z-index: 0;
+  }
+
+  .link-item:hover::before {
+    width: 100%;
+  }
+
+  .link-item:first-child {
+    border-top: 0.5px solid var(--rule);
+  }
+
+  .link-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .link-label {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--white);
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  .link-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: #444;
+    margin-top: 2px;
+    transition: color 0.2s;
+  }
+
+  .link-arrow {
+    font-size: 11px;
+    color: #333;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s ease, color 0.2s;
+    letter-spacing: 1px;
+  }
+
+  .link-item:hover .link-arrow {
+    transform: translateX(4px);
+    color: #666;
+  }
+
+  .link-item:hover .link-label {
+    color: #ffffff;
+  }
+
+  .primary-link {
+    background: var(--white);
+    padding: 20px;
+    margin-bottom: 16px;
+    border: none;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .primary-link::before {
+    background: #e0ddd8;
+  }
+
+  .primary-link .link-label {
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .primary-link .link-arrow {
+    color: #888;
+  }
+
+  .primary-link:hover .link-label {
+    color: var(--ink);
+  }
+
+  .icon-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .primary-link .icon-dot {
+    background: var(--ink);
+  }
+
+  .link-item .icon-dot {
+    background: #333;
+  }
+
+  .bottom-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--rule);
+    margin-top: 40px;
+  }
+
+  .footer {
+    margin-top: 20px;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #222;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="top-rule"></div>
+
+  <div class="wordmark">HARD <span>CLOSE</span></div>
+  <div class="tagline">Fractional Controller & AI Advisory</div>
+  <div class="name">Robel Habte &nbsp;·&nbsp; New York, NY</div>
+
+  <div class="divider"></div>
+
+  <div class="links">
+
+    <a class="link-item primary-link" href="https://calendly.com/robel-hardclose" target="_blank" rel="noopener">
+      <div class="link-left">
+        <div class="icon-dot"></div>
+        <div>
+          <div class="link-label">Book a Call</div>
+        </div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a class="link-item" href="https://tally.so/your-form" target="_blank" rel="noopener">
+      <div class="link-left">
+        <div class="icon-dot"></div>
+        <div>
+          <div class="link-label">Tell Me About Your Business</div>
+          <div class="link-sub">Start the conversation</div>
+        </div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a class="link-item" href="https://linkedin.com/in/robelhabte" target="_blank" rel="noopener">
+      <div class="link-left">
+        <div class="icon-dot"></div>
+        <div>
+          <div class="link-label">LinkedIn</div>
+          <div class="link-sub">Connect professionally</div>
+        </div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a class="link-item" href="https://youtube.com/@hardclose" target="_blank" rel="noopener">
+      <div class="link-left">
+        <div class="icon-dot"></div>
+        <div>
+          <div class="link-label">YouTube</div>
+          <div class="link-sub">Finance & AI content</div>
+        </div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a class="link-item" href="https://instagram.com/hardclose" target="_blank" rel="noopener">
+      <div class="link-left">
+        <div class="icon-dot"></div>
+        <div>
+          <div class="link-label">Instagram</div>
+          <div class="link-sub">Behind the brand</div>
+        </div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+    <a class="link-item" href="#" target="_blank" rel="noopener">
+      <div class="link-left">
+        <div class="icon-dot"></div>
+        <div>
+          <div class="link-label">Download the Playbook</div>
+          <div class="link-sub">Financial clarity for founders</div>
+        </div>
+      </div>
+      <div class="link-arrow">→</div>
+    </a>
+
+  </div>
+
+  <div class="bottom-rule"></div>
+  <div class="footer">hardclose.io &nbsp;·&nbsp; robel@hardclose.io</div>
+
+</div>
+
+</body>
+</html>
