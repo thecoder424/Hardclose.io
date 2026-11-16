@@ -289,6 +289,7 @@ button{font-family:inherit;cursor:pointer}
 .btn:hover{background:transparent;color:var(--paper)}
 .btn.ghost{background:transparent;color:var(--paper);border-color:#6B6B6B}
 .btn.ghost:hover{border-color:var(--paper)}
+.btn:disabled{opacity:.55;cursor:default}
 .hint{font-size:13.5px;color:#A8A8A8;max-width:36ch}
 .out{border:1px solid #6B6B6B;padding:22px 24px}
 .out pre{
@@ -544,15 +545,16 @@ footer .sheet{
               <span class="err" id="e-message" hidden>A sentence is enough.</span>
             </div>
             <div class="actions">
-              <button class="btn" type="submit">Compose message</button>
-              <span class="hint">This writes the message and copies it, for you to send from your own email.</span>
+              <input type="text" id="f-honey" name="_honey" tabindex="-1" autocomplete="off" hidden>
+              <button class="btn" type="submit" id="f-send">Send message</button>
+              <span class="hint">This goes straight to my inbox, and I reply from robert@hardclose.io.</span>
             </div>
           </form>
 
           <div class="out" id="out" hidden style="margin-top:30px">
             <span class="label" id="out-head">Copied to your clipboard</span>
             <pre id="out-text"></pre>
-            <div class="actions">
+            <div class="actions" id="out-actions">
               <button class="btn ghost" id="out-copy" type="button">Copy again</button>
               <a class="btn ghost" id="out-mail" href="mailto:robert@hardclose.io" style="text-decoration:none">Open in email</a>
             </div>
@@ -648,20 +650,63 @@ footer .sheet{
       var body = bodyLines.join("\n").replace(/\n{3,}/g, "\n\n");
       var shown = "To: robert@hardclose.io\nSubject: " + subject + "\n\n" + body;
 
-      outText.textContent = shown;
-      outMail.setAttribute("href",
-        "mailto:robert@hardclose.io?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body));
-      out.hidden = false;
+      var sendBtn = document.getElementById("f-send");
+      var outActions = document.getElementById("out-actions");
 
-      copy(shown,
-        function () { outHead.textContent = "Copied to your clipboard"; },
-        function () {
-          outHead.textContent = selectNode(outText)
-            ? "Selected, press copy on your keyboard"
-            : "Copy this and send it to robert@hardclose.io";
+      function showSent() {
+        outHead.textContent = "Sent";
+        outText.textContent = "Thank you. Your message is on its way, and I will reply to " + email + ".";
+        outActions.hidden = true;
+        out.hidden = false;
+        form.reset();
+        out.scrollIntoView({ block: "nearest" });
+      }
+
+      function showFallback() {
+        outText.textContent = shown;
+        outMail.setAttribute("href",
+          "mailto:robert@hardclose.io?subject=" + encodeURIComponent(subject) +
+          "&body=" + encodeURIComponent(body));
+        outActions.hidden = false;
+        out.hidden = false;
+        outHead.textContent = "This could not be sent from the page. Copy it into an email to robert@hardclose.io";
+        copy(shown,
+          function () { outHead.textContent = "This could not be sent from the page. It is copied, so paste it into an email to robert@hardclose.io"; },
+          function () { selectNode(outText); });
+        out.scrollIntoView({ block: "nearest" });
+      }
+
+      /* a filled honeypot is a bot: act as if it went through */
+      if (document.getElementById("f-honey").value) { showSent(); return; }
+
+      sendBtn.disabled = true;
+      sendBtn.textContent = "Sending";
+      var restore = function () { sendBtn.disabled = false; sendBtn.textContent = "Send message"; };
+
+      var request;
+      try {
+        request = fetch("https://formsubmit.co/ajax/robert@hardclose.io", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            name: name,
+            company: company,
+            email: email,
+            message: message,
+            _subject: "Hard Close site: " + subject,
+            _replyto: email,
+            _template: "table"
+          })
         });
-      out.scrollIntoView({ block: "nearest" });
+      } catch (e) { restore(); showFallback(); return; }
+
+      request
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          restore();
+          if (res.ok && String(res.d && res.d.success) === "true") { showSent(); } else { showFallback(); }
+        })
+        .catch(function () { restore(); showFallback(); });
     });
   }
 
