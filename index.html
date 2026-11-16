@@ -324,6 +324,19 @@ form{display:flex;flex-direction:column;gap:28px}
 .direct p.note{margin-top:14px;font-size:15px;color:var(--grey-1);max-width:38ch}
 .direct .btn{margin-top:22px}
 
+/* the offer sits in the one black band */
+.dark .offer-wrap{border-top:0}
+.dark .offer span{color:#9C9C9C}
+.dark .field label{color:#9C9C9C}
+.dark .field input,.dark .field textarea{color:var(--paper);border-bottom-color:#6A6A6A}
+.dark .field input:focus,.dark .field textarea:focus{border-bottom-color:var(--paper)}
+.dark .field[data-bad="1"] input,.dark .field[data-bad="1"] textarea{border-bottom-color:var(--paper)}
+.dark .hint,.dark .direct p.note{color:#9C9C9C}
+.dark .out{border-color:#6A6A6A}
+.dark .direct{border-top-color:#4A4A4A}
+.dark .btn.ghost{background:transparent;color:var(--paper);border-color:#6A6A6A}
+.dark .btn.ghost:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+
 footer{border-top:1px solid var(--hair)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-block:26px;color:var(--grey-2)}
 
@@ -570,10 +583,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
   </section>
 
   <!-- 05 -->
-  <section class="sec" id="start" style="padding-top:0">
+  <section class="sec dark" id="start">
     <div class="wrap">
       <div class="offer-wrap">
-        <p class="mono dim" style="padding-block:16px clamp(28px,4vw,52px)">05 &nbsp; Start here</p>
+        <p class="mono dim" style="padding-block:0 clamp(28px,4vw,52px)">05 &nbsp; Start here</p>
         <p class="offer">Send me read access to your books and give me ninety minutes. <span>I will tell you what I see, whether or not you hire me.</span></p>
 
         <div class="offer-grid">
