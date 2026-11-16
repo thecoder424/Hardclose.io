@@ -1,319 +1,681 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Robel Habte — Hard Close LLC</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Helvetica+Neue:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hard Close Fractional Controller</title>
+<meta name="description" content="Hard Close is a fractional controller practice for companies with a raise, an audit or a sale ahead of them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Layout idea: a wide white sheet set like a printed statement. A narrow left rail carries
+   section numbers in ledger type, the right column carries the reading. One black band at the end for the offer. */
+:root{
+  --paper:#FFFFFF;
+  --ink:#0A0A0A;
+  --grey-1:#5C5C5C;   /* secondary text */
+  --grey-2:#8F8F8F;   /* labels, numerals */
+  --hair:#DADADA;     /* hairline rules */
+  --wash:#F4F4F4;     /* quiet fills */
+  --display:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --body:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:light;
+}
 
-  :root {
-    --ink: #0A0A0C;
-    --white: #F4F2EE;
-    --mid: #4A4A4A;
-    --rule: #1E1E22;
-    --accent: #F4F2EE;
-  }
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+a{color:inherit}
+p{margin:0}
+h1,h2,h3{margin:0;font-weight:400}
 
-  html, body {
-    height: 100%;
-    background: var(--ink);
-    color: var(--white);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
+.sheet{
+  max-width:1160px;
+  margin-inline:auto;
+  padding-inline:clamp(20px,5vw,56px);
+}
 
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 3rem 1.5rem;
-  }
+.label{
+  font-family:var(--mono);
+  font-size:11.5px;
+  font-weight:500;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--grey-2);
+}
 
-  .card {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-    animation: fadeUp 0.8s ease both;
-  }
+/* masthead */
+.mast{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:14px 32px;
+  padding-block:28px;
+  border-bottom:1px solid var(--ink);
+}
+.wordmark{
+  font-family:var(--display);
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.nav{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center}
+.nav a{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+  color:var(--grey-1);padding-block:4px;border-bottom:1px solid transparent;
+  transition:color .15s ease,border-color .15s ease;
+}
+.nav a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.nav a.cta{color:var(--ink);border-bottom-color:var(--ink)}
+a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:4px}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+/* hero */
+.hero{
+  display:grid;
+  grid-template-columns:minmax(0,7fr) minmax(0,4fr);
+  gap:56px 72px;
+  align-items:end;
+  padding-block:clamp(64px,10vw,128px) clamp(64px,9vw,112px);
+}
+.hero .label{display:block;margin-bottom:30px}
+h1{
+  font-family:var(--display);
+  font-size:clamp(2.4rem,6vw,4.6rem);
+  line-height:1.06;
+  letter-spacing:-.04em;
+  text-wrap:balance;
+}
+h1 em{font-style:normal}
+.lead{
+  margin-top:36px;
+  max-width:54ch;
+  font-size:19px;
+  line-height:1.6;
+  color:var(--grey-1);
+}
+.lead strong{color:var(--ink);font-weight:500}
 
-  .top-rule {
-    width: 100%;
-    height: 1px;
-    background: var(--white);
-    margin-bottom: 40px;
-    animation: expand 0.9s ease both;
-    transform-origin: left;
-  }
+/* dictionary entry */
+.entry{
+  border-top:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  padding-block:26px 28px;
+}
+.entry .term{
+  font-family:var(--display);
+  font-size:30px;
+  line-height:1.1;
+  font-weight:500;
+}
+.entry .pos{
+  margin-top:6px;
+  font-family:var(--mono);
+  font-size:11.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--grey-2);
+}
+.entry .def{margin-top:16px;font-size:16px;line-height:1.62}
+.entry .origin{margin-top:16px;font-size:14.5px;line-height:1.6;color:var(--grey-1)}
+.entry .origin span{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--grey-2);
+  margin-right:8px;
+}
 
-  @keyframes expand {
-    from { transform: scaleX(0); }
-    to   { transform: scaleX(1); }
-  }
+/* sections */
+.sec{
+  display:grid;
+  grid-template-columns:minmax(0,3fr) minmax(0,9fr);
+  gap:28px 72px;
+  padding-block:clamp(56px,8vw,104px);
+  border-top:1px solid var(--hair);
+}
+.rail{display:flex;flex-direction:column;gap:10px}
+.rail .num{
+  font-family:var(--display);
+  font-size:44px;
+  line-height:1;
+  color:var(--ink);
+  font-variant-numeric:lining-nums;
+}
+h2{
+  font-family:var(--display);
+  font-size:clamp(1.9rem,4.2vw,3rem);
+  line-height:1.12;
+  letter-spacing:-.035em;
+  text-wrap:balance;
+  max-width:20ch;
+}
+.sec .intro{margin-top:22px;max-width:60ch;color:var(--grey-1)}
 
-  .wordmark {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 500;
-    font-size: clamp(28px, 7vw, 36px);
-    letter-spacing: 8px;
-    text-transform: uppercase;
-    color: var(--white);
-    text-align: center;
-    line-height: 1;
-  }
+/* the standard */
+.three{
+  margin-top:52px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:40px;
+}
+.three article{border-top:1px solid var(--ink);padding-top:20px}
+.three h3{
+  font-family:var(--display);
+  font-size:24px;
+  line-height:1.2;
+  text-wrap:balance;
+  margin-top:12px;
+}
+.three p{margin-top:14px;font-size:15.5px;line-height:1.65;color:var(--grey-1)}
 
-  .wordmark span {
-    font-weight: 300;
-    letter-spacing: 8px;
-  }
+/* the record: a T-account */
+.taccount{margin-top:48px;border-top:2px solid var(--ink)}
+.trow{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  border-bottom:1px solid var(--hair);
+}
+.trow > div{padding:20px 28px 20px 0;min-width:0}
+.trow > div + div{padding:20px 0 20px 28px;border-left:1px solid var(--ink)}
+.trow.head > div{padding-block:12px}
+.trow .tag{display:none}
+.found{font-size:16px;line-height:1.55;color:var(--grey-1)}
+.left{
+  font-family:var(--display);
+  font-size:20px;
+  line-height:1.3;
+  text-wrap:balance;
+}
+.taccount .close{
+  border-bottom:3px double var(--ink);
+  height:10px;
+}
+.fine{margin-top:16px;font-size:13.5px;color:var(--grey-2)}
 
-  .tagline {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: 15px;
-    color: #666;
-    letter-spacing: 0.5px;
-    margin-top: 10px;
-    text-align: center;
-  }
+/* engagement */
+.steps{margin-top:48px;display:flex;flex-direction:column}
+.step{
+  display:grid;
+  grid-template-columns:72px minmax(0,1fr);
+  gap:0 28px;
+  padding-block:28px;
+  border-top:1px solid var(--hair);
+}
+.step:last-child{border-bottom:1px solid var(--hair)}
+.step .rn{
+  font-family:var(--mono);
+  font-size:13px;line-height:2.4;letter-spacing:.1em;color:var(--grey-2);
+}
+.step h3{font-family:var(--display);font-size:26px;line-height:1.2}
+.step p{margin-top:10px;max-width:60ch;font-size:16px;color:var(--grey-1)}
 
-  .name {
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #333;
-    margin-top: 6px;
-    text-align: center;
-  }
+/* about */
+.pull{
+  font-family:var(--display);
+  font-size:clamp(1.5rem,3.2vw,2.15rem);
+  line-height:1.24;
+  letter-spacing:-.03em;
+  max-width:26ch;
+  text-wrap:balance;
+}
+.about-grid{
+  margin-top:44px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:28px 48px;
+}
+.about-grid p{font-size:16px;line-height:1.68;color:var(--grey-1)}
+.about-grid p strong{color:var(--ink);font-weight:500}
 
-  .divider {
-    width: 32px;
-    height: 1px;
-    background: #222;
-    margin: 28px 0;
-  }
+/* the offer: one black band */
+.band{background:var(--ink);color:var(--paper);margin-top:clamp(40px,6vw,72px)}
+.band .sheet{padding-block:clamp(64px,9vw,120px)}
+.band .label{color:#A8A8A8}
+.offer{
+  margin-top:26px;
+  font-family:var(--display);
+  font-size:clamp(1.9rem,4.6vw,3.4rem);
+  line-height:1.14;
+  letter-spacing:-.035em;
+  max-width:24ch;
+  text-wrap:balance;
+}
+.offer em{font-style:normal;color:#A8A8A8}
+.band-grid{
+  margin-top:56px;
+  display:grid;
+  grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:48px 72px;
+  align-items:start;
+}
+form{display:flex;flex-direction:column;gap:26px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field label{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:#A8A8A8;
+}
+.field input,.field textarea{
+  width:100%;
+  font-family:var(--body);font-size:16.5px;line-height:1.5;
+  color:var(--paper);background:transparent;
+  border:0;border-bottom:1px solid #6B6B6B;border-radius:0;
+  padding:8px 0;
+}
+.field textarea{resize:vertical;min-height:92px}
+.field input:focus,.field textarea:focus{outline:0;border-bottom-color:var(--paper)}
+.field .err{font-size:13px;color:var(--paper)}
+.field[data-bad="1"] input,.field[data-bad="1"] textarea{border-bottom-style:dashed;border-bottom-color:var(--paper)}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+button{font-family:inherit;cursor:pointer}
+.btn{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:14px 22px;border-radius:0;
+  background:var(--paper);color:var(--ink);border:1px solid var(--paper);
+  transition:background .15s ease,color .15s ease;
+}
+.btn:hover{background:transparent;color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--paper);border-color:#6B6B6B}
+.btn.ghost:hover{border-color:var(--paper)}
+.hint{font-size:13.5px;color:#A8A8A8;max-width:36ch}
+.out{border:1px solid #6B6B6B;padding:22px 24px}
+.out pre{
+  margin:12px 0 18px;white-space:pre-wrap;word-break:break-word;
+  font-family:var(--body);font-size:15.5px;line-height:1.6;color:var(--paper);
+}
+.direct{border-top:1px solid #6B6B6B;padding-top:24px}
+.direct .addr{
+  margin-top:14px;
+  font-family:var(--display);
+  font-size:clamp(1.35rem,2.6vw,1.8rem);
+  line-height:1.2;
+  word-break:break-word;
+  user-select:all;
+}
+.direct .note{margin-top:14px;font-size:14.5px;line-height:1.6;color:#A8A8A8;max-width:38ch}
+.direct .btn{margin-top:22px}
 
-  .links {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
+footer .sheet{
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;
+  padding-block:26px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--grey-2);
+}
 
-  .link-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 0;
-    border-bottom: 0.5px solid var(--rule);
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
-  }
+.entry .term,.rail .num,.three h3,.left,.step h3,.direct .addr{letter-spacing:-.025em}
+.left{font-size:18px;line-height:1.4}
+.three h3{font-size:22px}
+.step h3{font-size:23px}
 
-  .link-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 0;
-    background: #141418;
-    transition: width 0.25s ease;
-    z-index: 0;
-  }
+[hidden]{display:none!important}
 
-  .link-item:hover::before {
-    width: 100%;
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr);align-items:start}
+  .sec{grid-template-columns:minmax(0,1fr)}
+  .rail{flex-direction:row;align-items:baseline;gap:16px}
+  .rail .num{font-size:32px}
+  .three{grid-template-columns:minmax(0,1fr);gap:32px}
+  .about-grid{grid-template-columns:minmax(0,1fr)}
+  .band-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  body{font-size:16.5px}
+  .mast{padding-block:20px}
+  .nav a:not(.cta){display:none}
+  .trow{grid-template-columns:minmax(0,1fr)}
+  .trow.head{display:none}
+  .trow > div{padding:18px 0 4px}
+  .trow > div + div{padding:6px 0 20px;border-left:0}
+  .trow .tag{
+    display:block;margin-bottom:6px;
+    font-family:var(--mono);font-size:10.5px;font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--grey-2);
   }
-
-  .link-item:first-child {
-    border-top: 0.5px solid var(--rule);
-  }
-
-  .link-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .link-label {
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--white);
-    font-weight: 400;
-    transition: color 0.2s;
-  }
-
-  .link-sub {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 12px;
-    color: #444;
-    margin-top: 2px;
-    transition: color 0.2s;
-  }
-
-  .link-arrow {
-    font-size: 11px;
-    color: #333;
-    position: relative;
-    z-index: 1;
-    transition: transform 0.2s ease, color 0.2s;
-    letter-spacing: 1px;
-  }
-
-  .link-item:hover .link-arrow {
-    transform: translateX(4px);
-    color: #666;
-  }
-
-  .link-item:hover .link-label {
-    color: #ffffff;
-  }
-
-  .primary-link {
-    background: var(--white);
-    padding: 20px;
-    margin-bottom: 16px;
-    border: none;
-    border-top: none;
-    border-bottom: none;
-  }
-
-  .primary-link::before {
-    background: #e0ddd8;
-  }
-
-  .primary-link .link-label {
-    color: var(--ink);
-    font-weight: 500;
-    font-size: 12px;
-  }
-
-  .primary-link .link-arrow {
-    color: #888;
-  }
-
-  .primary-link:hover .link-label {
-    color: var(--ink);
-  }
-
-  .icon-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    flex-shrink: 0;
-  }
-
-  .primary-link .icon-dot {
-    background: var(--ink);
-  }
-
-  .link-item .icon-dot {
-    background: #333;
-  }
-
-  .bottom-rule {
-    width: 100%;
-    height: 1px;
-    background: var(--rule);
-    margin-top: 40px;
-  }
-
-  .footer {
-    margin-top: 20px;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #222;
-    text-align: center;
-  }
+  .step{grid-template-columns:44px minmax(0,1fr);gap:0 14px}
+  .pair{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
 </style>
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 </head>
 <body>
 
-<div class="card">
+<header class="sheet">
+  <div class="mast">
+    <a class="wordmark" href="#top">Hard Close</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#standard">The standard</a>
+      <a href="#record">The record</a>
+      <a href="#engagement">Engagement</a>
+      <a href="#about">About</a>
+      <a class="cta" href="#start">Start here</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="top-rule"></div>
+<main id="top">
 
-  <div class="wordmark">HARD <span>CLOSE</span></div>
-  <div class="tagline">Fractional Controller & AI Advisory</div>
-  <div class="name">Robel Habte &nbsp;·&nbsp; New York, NY</div>
+  <div class="sheet">
+    <div class="hero">
+      <div>
+        <span class="label">Fractional controller</span>
+        <h1>Books that hold up when <em>someone else</em> opens them.</h1>
+        <p class="lead">Hard Close is a controller practice for companies with a raise, an audit or a sale ahead of them. <strong>I run the close, the cash and the balance sheet</strong>, so that the numbers you hand over are the numbers that survive the questions.</p>
+      </div>
+      <aside class="entry" aria-label="Definition of hard close">
+        <p class="term">hard close</p>
+        <p class="pos">noun</p>
+        <p class="def">The books closed, reconciled and tied to source on a fixed day every month, to a standard that an investor, an auditor or a buyer could inspect without notice.</p>
+        <p class="origin"><span>Origin</span>A rule I worked under for years inside large finance teams, where the close had a day and the day did not move.</p>
+      </aside>
+    </div>
+  </div>
 
-  <div class="divider"></div>
+  <div class="sheet">
 
-  <div class="links">
+    <section class="sec" id="standard">
+      <div class="rail">
+        <span class="num">01</span>
+        <span class="label">The standard</span>
+      </div>
+      <div>
+        <h2>Three things the books should do, every month.</h2>
+        <p class="intro">Most companies buy accounting at the lowest price available and find out what that bought them in the week it matters. These are the three things I build so that week is uneventful.</p>
 
-    <a class="link-item primary-link" href="#" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/hardclose'});return false;">
-      <div class="link-left">
-        <div class="icon-dot"></div>
-        <div>
-          <div class="link-label">Book a Call</div>
+        <div class="three">
+          <article>
+            <span class="label">The close</span>
+            <h3>Finish on a calendar</h3>
+            <p>The close has a date, a checklist and an owner, and it finishes on the same day each month whether or not anyone is chasing it. I have taken a fifteen-day close down to five by writing the work down as it was done and putting it on a schedule.</p>
+          </article>
+          <article>
+            <span class="label">The cash</span>
+            <h3>Say where the money is</h3>
+            <p>A cash file built from a vendor budget and checked against the bank every day, so the number you plan around in the morning is the number that is actually there. It gets built first, because it is the one report that changes a decision you are making today.</p>
+          </article>
+          <article>
+            <span class="label">The balance sheet</span>
+            <h3>Stand up to inspection</h3>
+            <p>Every account reconciled and tied to a source document, so that diligence, an audit or a lender's review becomes a matter of opening the file. Clean books shorten that process, and the weeks saved are weeks spent running the company.</p>
+          </article>
         </div>
       </div>
-      <div class="link-arrow">→</div>
-    </a>
+    </section>
 
-    <a class="link-item" href="https://tally.so/r/zx1Q2E" target="_blank" rel="noopener">
-      <div class="link-left">
-        <div class="icon-dot"></div>
-        <div>
-          <div class="link-label">Tell Me About Your Business</div>
-          <div class="link-sub">Start the conversation</div>
+    <section class="sec" id="record">
+      <div class="rail">
+        <span class="num">02</span>
+        <span class="label">The record</span>
+      </div>
+      <div>
+        <h2>What I found, and what I left.</h2>
+        <p class="intro">Each line is a situation I walked into and what it looked like when I was done. The figures are mine.</p>
+
+        <div class="taccount" role="table" aria-label="What was found and what was left">
+          <div class="trow head" role="row">
+            <div class="label" role="columnheader">Found</div>
+            <div class="label" role="columnheader">Left</div>
+          </div>
+
+          <div class="trow" role="row">
+            <div class="found" role="cell"><span class="tag">Found</span>A month-end close that took fifteen days.</div>
+            <div class="left" role="cell"><span class="tag">Left</span>Five days, on a schedule.</div>
+          </div>
+          <div class="trow" role="row">
+            <div class="found" role="cell"><span class="tag">Found</span>Twelve months of books untouched, with an investor meeting on the calendar.</div>
+            <div class="left" role="cell"><span class="tag">Left</span>The full year rebuilt from source, ready the week of the meeting.</div>
+          </div>
+          <div class="trow" role="row">
+            <div class="found" role="cell"><span class="tag">Found</span>Eighteen months of payroll that had never been recorded, discovered in the middle of an audit.</div>
+            <div class="left" role="cell"><span class="tag">Left</span>Traced, booked and reconciled in full.</div>
+          </div>
+          <div class="trow" role="row">
+            <div class="found" role="cell"><span class="tag">Found</span>$3M sitting in the wrong place on a balance sheet that had balanced the whole time.</div>
+            <div class="left" role="cell"><span class="tag">Left</span>Traced and reclassified.</div>
+          </div>
+          <div class="trow" role="row">
+            <div class="found" role="cell"><span class="tag">Found</span>A CEO planning around $1.2M of available cash, three days before payroll.</div>
+            <div class="left" role="cell"><span class="tag">Left</span>The real figure on his desk: $600K in the account, $590K already approved to go out, about $10K of headroom.</div>
+          </div>
+          <div class="trow" role="row">
+            <div class="found" role="cell"><span class="tag">Found</span>Three cloud subscriptions billing $10K a month each.</div>
+            <div class="left" role="cell"><span class="tag">Left</span>One subscription, and $20K a month back.</div>
+          </div>
+          <div class="trow" role="row">
+            <div class="found" role="cell"><span class="tag">Found</span>Two returns due with four days of runway.</div>
+            <div class="left" role="cell"><span class="tag">Left</span>Both filed from abroad, with no penalties.</div>
+          </div>
+          <div class="close" aria-hidden="true"></div>
         </div>
       </div>
-      <div class="link-arrow">→</div>
-    </a>
+    </section>
 
-    <a class="link-item" href="https://www.linkedin.com/in/robel-habte" target="_blank" rel="noopener">
-      <div class="link-left">
-        <div class="icon-dot"></div>
-        <div>
-          <div class="link-label">LinkedIn</div>
-          <div class="link-sub">Connect professionally</div>
+    <section class="sec" id="engagement">
+      <div class="rail">
+        <span class="num">03</span>
+        <span class="label">Engagement</span>
+      </div>
+      <div>
+        <h2>How it starts, and how it runs.</h2>
+
+        <div class="steps">
+          <div class="step">
+            <span class="rn">01</span>
+            <div>
+              <h3>Ninety minutes</h3>
+              <p>You send read access to the books and give me ninety minutes. I tell you what I see, whether or not you hire me, and if there is nothing worth telling you I will say that.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="rn">02</span>
+            <div>
+              <h3>The cleanup</h3>
+              <p>Whatever the review turns up gets fixed as a finite project with a defined scope: reconciliations brought current, unrecorded activity booked, the balance sheet tied out, and the procedures written down while the work is being done.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="rn">03</span>
+            <div>
+              <h3>The close</h3>
+              <p>From there I run the function as your controller on a flat monthly retainer, which covers the close, the cash file, the reporting package, and the audit or diligence when it comes. It is built so that the day you no longer need someone at my level, you can hand it over without anything breaking.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="link-arrow">→</div>
-    </a>
+    </section>
 
-    <a class="link-item" href="https://robelhardclose.gumroad.com/l/xokeok" target="_blank" rel="noopener">
-      <div class="link-left">
-        <div class="icon-dot"></div>
-        <div>
-          <div class="link-label">Download the Playbook</div>
-          <div class="link-sub">Financial clarity for founders</div>
+    <section class="sec" id="about">
+      <div class="rail">
+        <span class="num">04</span>
+        <span class="label">About</span>
+      </div>
+      <div>
+        <p class="pull">Balancing and being correct are different things, and the gap only shows when someone goes looking.</p>
+
+        <div class="about-grid">
+          <p><strong>I am Robert, and I have spent fifteen years in corporate accounting and controllership</strong>, most of it from inside the company. That includes running full-cycle accounting for portfolios of companies at once and managing the offshore teams that do the production work, which is how I know what that model does well and where it stops.</p>
+          <p><strong>My job is that the books close, the accounts reconcile and the cash is known</strong>, so that when someone else audits them they hold up without a scramble. What you are buying is somebody with the standing to stop and question a number.</p>
         </div>
       </div>
-      <div class="link-arrow">→</div>
-    </a>
+    </section>
 
   </div>
 
-  <div class="bottom-rule"></div>
-  <div class="footer">hardclose.io &nbsp;·&nbsp; robel@hardclose.io</div>
+  <section class="band" id="start">
+    <div class="sheet">
+      <span class="label">05 &nbsp; Start here</span>
+      <p class="offer">Send me read access to your books and give me ninety minutes. I will tell you what I see, <em>whether or not you hire me.</em></p>
 
-</div>
+      <div class="band-grid">
+        <div>
+          <form id="contact" novalidate>
+            <div class="pair">
+              <div class="field" id="w-name">
+                <label for="f-name">Name</label>
+                <input id="f-name" name="name" type="text" autocomplete="name">
+              </div>
+              <div class="field" id="w-company">
+                <label for="f-company">Company</label>
+                <input id="f-company" name="company" type="text" autocomplete="organization">
+              </div>
+            </div>
+            <div class="field" id="w-email">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email">
+              <span class="err" id="e-email" hidden>Add an email address so I can reply.</span>
+            </div>
+            <div class="field" id="w-message">
+              <label for="f-message">What is coming up, and where the books are today</label>
+              <textarea id="f-message" name="message" rows="4"></textarea>
+              <span class="err" id="e-message" hidden>A sentence is enough.</span>
+            </div>
+            <div class="actions">
+              <button class="btn" type="submit">Compose message</button>
+              <span class="hint">This writes the message and copies it, for you to send from your own email.</span>
+            </div>
+          </form>
 
+          <div class="out" id="out" hidden style="margin-top:30px">
+            <span class="label" id="out-head">Copied to your clipboard</span>
+            <pre id="out-text"></pre>
+            <div class="actions">
+              <button class="btn ghost" id="out-copy" type="button">Copy again</button>
+              <a class="btn ghost" id="out-mail" href="mailto:robert@hardclose.io" style="text-decoration:none">Open in email</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="direct">
+          <span class="label">Or write directly</span>
+          <p class="addr" id="addr">robert@hardclose.io</p>
+          <p class="note">There is no deck and no discovery call before the discovery call. A few lines about what is ahead of you is enough to start.</p>
+          <button class="btn ghost" id="addr-copy" type="button">Copy address</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="sheet">
+    <span>Hard Close LLC</span>
+    <span>Fractional controller</span>
+    <span>&copy; 2026</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  function selectNode(el) {
+    try {
+      var r = document.createRange();
+      r.selectNodeContents(el);
+      var s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+      return true;
+    } catch (e) { return false; }
+  }
+  function copy(text, ok, fail) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(ok, fail);
+      } else { fail(); }
+    } catch (e) { fail(); }
+  }
+
+  var addr = document.getElementById("addr");
+  var addrCopy = document.getElementById("addr-copy");
+  if (addr && addrCopy) {
+    addrCopy.addEventListener("click", function () {
+      var done = function (word) {
+        addrCopy.textContent = word;
+        setTimeout(function () { addrCopy.textContent = "Copy address"; }, 1800);
+      };
+      copy(addr.textContent.trim(),
+        function () { done("Copied"); },
+        function () { done(selectNode(addr) ? "Selected" : "Select it above"); });
+    });
+  }
+
+  var form = document.getElementById("contact");
+  var out = document.getElementById("out");
+  var outText = document.getElementById("out-text");
+  var outHead = document.getElementById("out-head");
+  var outCopy = document.getElementById("out-copy");
+  var outMail = document.getElementById("out-mail");
+
+  function mark(wrapId, errId, bad) {
+    var w = document.getElementById(wrapId), e = document.getElementById(errId);
+    if (w) w.setAttribute("data-bad", bad ? "1" : "0");
+    if (e) e.hidden = !bad;
+  }
+
+  if (form) {
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var name = document.getElementById("f-name").value.trim();
+      var company = document.getElementById("f-company").value.trim();
+      var email = document.getElementById("f-email").value.trim();
+      var message = document.getElementById("f-message").value.trim();
+
+      var badEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      var badMessage = message.length < 2;
+      mark("w-email", "e-email", badEmail);
+      mark("w-message", "e-message", badMessage);
+      if (badEmail) { document.getElementById("f-email").focus(); return; }
+      if (badMessage) { document.getElementById("f-message").focus(); return; }
+
+      var subject = company ? company + ", books" : "Books";
+      var bodyLines = [message, "", name];
+      if (company) bodyLines.push(company);
+      bodyLines.push(email);
+      var body = bodyLines.join("\n").replace(/\n{3,}/g, "\n\n");
+      var shown = "To: robert@hardclose.io\nSubject: " + subject + "\n\n" + body;
+
+      outText.textContent = shown;
+      outMail.setAttribute("href",
+        "mailto:robert@hardclose.io?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body));
+      out.hidden = false;
+
+      copy(shown,
+        function () { outHead.textContent = "Copied to your clipboard"; },
+        function () {
+          outHead.textContent = selectNode(outText)
+            ? "Selected, press copy on your keyboard"
+            : "Copy this and send it to robert@hardclose.io";
+        });
+      out.scrollIntoView({ block: "nearest" });
+    });
+  }
+
+  if (outCopy) {
+    outCopy.addEventListener("click", function () {
+      copy(outText.textContent,
+        function () {
+          outCopy.textContent = "Copied";
+          setTimeout(function () { outCopy.textContent = "Copy again"; }, 1800);
+        },
+        function () { selectNode(outText); });
+    });
+  }
+})();
+</script>
 </body>
 </html>
