@@ -3,21 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hard Close Fractional Controller</title>
-<meta name="description" content="Hard Close is a fractional controller practice for companies with a raise, an audit or a sale ahead of them.">
+<title>Hard Close Controller Practice</title>
+<meta name="description" content="Hard Close is a fractional controller practice. Your books balance. That does not make them right.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-/* Layout idea: a wide white sheet set like a printed statement. A narrow left rail carries
-   section numbers in ledger type, the right column carries the reading. One black band at the end for the offer. */
+/* Layout idea: one loud thing per screen. A headline that fills the viewport and inks itself in as you scroll,
+   then a ledger you open, one black room for the cash number, a fifteen-day calendar you can collapse, and the offer set as large as the headline. */
 :root{
   --paper:#FFFFFF;
   --ink:#0A0A0A;
-  --grey-1:#5C5C5C;   /* secondary text */
-  --grey-2:#8F8F8F;   /* labels, numerals */
-  --hair:#DADADA;     /* hairline rules */
-  --wash:#F4F4F4;     /* quiet fills */
+  --grey-1:#5A5A5A;   /* secondary text */
+  --grey-2:#8C8C8C;   /* labels, numerals */
+  --hair:#D9D9D9;     /* hairlines */
+  --wash:#F3F3F3;     /* quiet fills */
   --display:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif;
   --body:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif;
   --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
@@ -27,545 +27,601 @@
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--body);
-  font-size:17px;
-  line-height:1.65;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 a{color:inherit}
-p{margin:0}
-h1,h2,h3{margin:0;font-weight:400}
-
-.sheet{
-  max-width:1160px;
-  margin-inline:auto;
-  padding-inline:clamp(20px,5vw,56px);
-}
-
-.label{
-  font-family:var(--mono);
-  font-size:11.5px;
-  font-weight:500;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--grey-2);
-}
-
-/* masthead */
-.mast{
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
-  gap:14px 32px;
-  padding-block:28px;
-  border-bottom:1px solid var(--ink);
-}
-.wordmark{
-  font-family:var(--display);
-  font-size:15px;
-  font-weight:600;
-  letter-spacing:.24em;
-  text-transform:uppercase;
-  text-decoration:none;
-  white-space:nowrap;
-}
-.nav{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center}
-.nav a{
-  font-family:var(--mono);font-size:11.5px;font-weight:500;
-  letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
-  color:var(--grey-1);padding-block:4px;border-bottom:1px solid transparent;
-  transition:color .15s ease,border-color .15s ease;
-}
-.nav a:hover{color:var(--ink);border-bottom-color:var(--ink)}
-.nav a.cta{color:var(--ink);border-bottom-color:var(--ink)}
+p,h1,h2,h3{margin:0}
+h1,h2,h3{font-weight:500}
+button{font-family:inherit;cursor:pointer}
+[hidden]{display:none!important}
 a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:4px}
 
-/* hero */
-.hero{
-  display:grid;
-  grid-template-columns:minmax(0,7fr) minmax(0,4fr);
-  gap:56px 72px;
-  align-items:end;
-  padding-block:clamp(64px,10vw,128px) clamp(64px,9vw,112px);
+.wrap{max-width:1320px;margin-inline:auto;padding-inline:clamp(20px,4.5vw,64px)}
+.mono{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;
+  letter-spacing:.13em;text-transform:uppercase;
 }
-.hero .label{display:block;margin-bottom:30px}
-h1{
-  font-family:var(--display);
-  font-size:clamp(2.4rem,6vw,4.6rem);
-  line-height:1.06;
-  letter-spacing:-.04em;
-  text-wrap:balance;
-}
-h1 em{font-style:normal}
-.lead{
-  margin-top:36px;
-  max-width:54ch;
-  font-size:19px;
-  line-height:1.6;
-  color:var(--grey-1);
-}
-.lead strong{color:var(--ink);font-weight:500}
+.dim{color:var(--grey-2)}
 
-/* dictionary entry */
-.entry{
-  border-top:1px solid var(--ink);
-  border-bottom:1px solid var(--ink);
-  padding-block:26px 28px;
-}
-.entry .term{
-  font-family:var(--display);
-  font-size:30px;
-  line-height:1.1;
-  font-weight:500;
-}
-.entry .pos{
-  margin-top:6px;
-  font-family:var(--mono);
-  font-size:11.5px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--grey-2);
-}
-.entry .def{margin-top:16px;font-size:16px;line-height:1.62}
-.entry .origin{margin-top:16px;font-size:14.5px;line-height:1.6;color:var(--grey-1)}
-.entry .origin span{
-  font-family:var(--mono);font-size:10.5px;font-weight:500;
-  letter-spacing:.14em;text-transform:uppercase;color:var(--grey-2);
-  margin-right:8px;
-}
+/* progress hairline */
+#bar{position:fixed;inset:0 0 auto 0;height:3px;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;z-index:30}
 
-/* sections */
-.sec{
-  display:grid;
-  grid-template-columns:minmax(0,3fr) minmax(0,9fr);
-  gap:28px 72px;
-  padding-block:clamp(56px,8vw,104px);
-  border-top:1px solid var(--hair);
-}
-.rail{display:flex;flex-direction:column;gap:10px}
-.rail .num{
-  font-family:var(--display);
-  font-size:44px;
-  line-height:1;
-  color:var(--ink);
-  font-variant-numeric:lining-nums;
-}
-h2{
-  font-family:var(--display);
-  font-size:clamp(1.9rem,4.2vw,3rem);
-  line-height:1.12;
-  letter-spacing:-.035em;
-  text-wrap:balance;
-  max-width:20ch;
-}
-.sec .intro{margin-top:22px;max-width:60ch;color:var(--grey-1)}
-
-/* the standard */
-.three{
-  margin-top:52px;
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:40px;
-}
-.three article{border-top:1px solid var(--ink);padding-top:20px}
-.three h3{
-  font-family:var(--display);
-  font-size:24px;
-  line-height:1.2;
-  text-wrap:balance;
-  margin-top:12px;
-}
-.three p{margin-top:14px;font-size:15.5px;line-height:1.65;color:var(--grey-1)}
-
-/* the record: a T-account */
-.taccount{margin-top:48px;border-top:2px solid var(--ink)}
-.trow{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+/* nav */
+.nav{
+  position:sticky;top:0;z-index:20;
+  background:rgba(255,255,255,.92);backdrop-filter:saturate(1.2) blur(10px);
   border-bottom:1px solid var(--hair);
 }
-.trow > div{padding:20px 28px 20px 0;min-width:0}
-.trow > div + div{padding:20px 0 20px 28px;border-left:1px solid var(--ink)}
-.trow.head > div{padding-block:12px}
-.trow .tag{display:none}
-.found{font-size:16px;line-height:1.55;color:var(--grey-1)}
-.left{
-  font-family:var(--display);
-  font-size:20px;
-  line-height:1.3;
-  text-wrap:balance;
-}
-.taccount .close{
-  border-bottom:3px double var(--ink);
-  height:10px;
-}
-.fine{margin-top:16px;font-size:13.5px;color:var(--grey-2)}
-
-/* engagement */
-.steps{margin-top:48px;display:flex;flex-direction:column}
-.step{
-  display:grid;
-  grid-template-columns:72px minmax(0,1fr);
-  gap:0 28px;
-  padding-block:28px;
-  border-top:1px solid var(--hair);
-}
-.step:last-child{border-bottom:1px solid var(--hair)}
-.step .rn{
-  font-family:var(--mono);
-  font-size:13px;line-height:2.4;letter-spacing:.1em;color:var(--grey-2);
-}
-.step h3{font-family:var(--display);font-size:26px;line-height:1.2}
-.step p{margin-top:10px;max-width:60ch;font-size:16px;color:var(--grey-1)}
-
-/* about */
-.pull{
-  font-family:var(--display);
-  font-size:clamp(1.5rem,3.2vw,2.15rem);
-  line-height:1.24;
-  letter-spacing:-.03em;
-  max-width:26ch;
-  text-wrap:balance;
-}
-.about-grid{
-  margin-top:44px;
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:28px 48px;
-}
-.about-grid p{font-size:16px;line-height:1.68;color:var(--grey-1)}
-.about-grid p strong{color:var(--ink);font-weight:500}
-
-/* the offer: one black band */
-.band{background:var(--ink);color:var(--paper);margin-top:clamp(40px,6vw,72px)}
-.band .sheet{padding-block:clamp(64px,9vw,120px)}
-.band .label{color:#A8A8A8}
-.offer{
-  margin-top:26px;
-  font-family:var(--display);
-  font-size:clamp(1.9rem,4.6vw,3.4rem);
-  line-height:1.14;
-  letter-spacing:-.035em;
-  max-width:24ch;
-  text-wrap:balance;
-}
-.offer em{font-style:normal;color:#A8A8A8}
-.band-grid{
-  margin-top:56px;
-  display:grid;
-  grid-template-columns:minmax(0,7fr) minmax(0,5fr);
-  gap:48px 72px;
-  align-items:start;
-}
-form{display:flex;flex-direction:column;gap:26px}
-.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
-.field{display:flex;flex-direction:column;gap:8px;min-width:0}
-.field label{
-  font-family:var(--mono);font-size:10.5px;font-weight:500;
-  letter-spacing:.14em;text-transform:uppercase;color:#A8A8A8;
-}
-.field input,.field textarea{
-  width:100%;
-  font-family:var(--body);font-size:16.5px;line-height:1.5;
-  color:var(--paper);background:transparent;
-  border:0;border-bottom:1px solid #6B6B6B;border-radius:0;
-  padding:8px 0;
-}
-.field textarea{resize:vertical;min-height:92px}
-.field input:focus,.field textarea:focus{outline:0;border-bottom-color:var(--paper)}
-.field .err{font-size:13px;color:var(--paper)}
-.field[data-bad="1"] input,.field[data-bad="1"] textarea{border-bottom-style:dashed;border-bottom-color:var(--paper)}
-.actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
-button{font-family:inherit;cursor:pointer}
-.btn{
-  font-family:var(--mono);font-size:11.5px;font-weight:500;
-  letter-spacing:.14em;text-transform:uppercase;
-  padding:14px 22px;border-radius:0;
-  background:var(--paper);color:var(--ink);border:1px solid var(--paper);
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px 28px;padding-block:16px}
+.wordmark{font-size:15px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:26px}
+.nav-links a{text-decoration:none;color:var(--grey-1);transition:color .15s ease}
+.nav-links a:hover{color:var(--ink)}
+.pill{
+  display:inline-block;text-decoration:none;
+  font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  padding:11px 18px;border:1px solid var(--ink);background:var(--ink);color:var(--paper)!important;
   transition:background .15s ease,color .15s ease;
 }
-.btn:hover{background:transparent;color:var(--paper)}
-.btn.ghost{background:transparent;color:var(--paper);border-color:#6B6B6B}
-.btn.ghost:hover{border-color:var(--paper)}
+.pill:hover{background:var(--paper);color:var(--ink)!important}
+
+/* hero */
+.hero{padding-block:clamp(48px,7vw,104px) 0}
+.hero .kicker{display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:space-between;margin-bottom:clamp(28px,4vw,56px)}
+h1{
+  font-size:clamp(2.7rem,10.4vw,9.4rem);
+  line-height:.93;letter-spacing:-.06em;
+}
+h1 span{display:block}
+h1 .l1{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+h1 .l2{color:var(--grey-2);animation:rise .9s .12s cubic-bezier(.2,.7,.2,1) both}
+@supports (-webkit-text-stroke:1px black) and ((-webkit-background-clip:text) or (background-clip:text)){
+  h1 .l2{
+    color:transparent;
+    -webkit-text-stroke:1.5px var(--ink);
+    background-image:linear-gradient(90deg,var(--ink) var(--fill,0%),transparent var(--fill,0%));
+    -webkit-background-clip:text;background-clip:text;
+  }
+}
+@keyframes rise{from{transform:translateY(.35em);opacity:0}to{transform:none;opacity:1}}
+
+.hero-foot{
+  display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:32px 64px;align-items:end;
+  margin-top:clamp(36px,5vw,72px);padding-bottom:clamp(40px,5vw,72px);
+}
+.hero-foot .scroll{display:flex;align-items:center;gap:12px;color:var(--grey-2)}
+.hero-foot .scroll i{display:block;width:44px;height:1px;background:var(--grey-2)}
+.lead{font-size:clamp(1.15rem,1.9vw,1.5rem);line-height:1.42;letter-spacing:-.02em;max-width:34em}
+.lead b{font-weight:500}
+.lead span{color:var(--grey-1)}
+
+/* ticker */
+.ticker{border-block:1px solid var(--ink);overflow:hidden;white-space:nowrap}
+.ticker .track{display:inline-flex;animation:slide 46s linear infinite}
+.ticker .set{display:inline-flex;gap:0;padding-block:14px}
+.ticker .set span{padding-inline:22px}
+.ticker .set span + span{border-left:1px solid var(--hair)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* live console: the close, running */
+.live{padding-block:clamp(40px,6vw,88px) 0}
+.live-cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-bottom:16px}
+.console{position:relative;background:var(--ink);color:#EDEDED;padding:clamp(14px,2vw,26px)}
+.console .cb{position:absolute;width:16px;height:16px;border:0 solid #FFFFFF;pointer-events:none}
+.console .cb.tl{top:8px;left:8px;border-top-width:1.5px;border-left-width:1.5px}
+.console .cb.tr{top:8px;right:8px;border-top-width:1.5px;border-right-width:1.5px}
+.console .cb.bl{bottom:8px;left:8px;border-bottom-width:1.5px;border-left-width:1.5px}
+.console .cb.br{bottom:8px;right:8px;border-bottom-width:1.5px;border-right-width:1.5px}
+.c-top,.c-bot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;padding:8px 14px 16px}
+.c-bot{padding:16px 14px 8px}
+.c-top .path{color:#9C9C9C}
+.c-day{display:flex;align-items:center;gap:14px}
+.c-prog{display:block;width:140px;height:8px;border:1px solid #6A6A6A}
+.c-prog i{display:block;height:100%;width:100%;background:#FFFFFF;transform-origin:0 50%;transition:transform .3s ease}
+.c-fx{display:flex;align-items:center;gap:0;border:1px solid #2C2C2C;border-bottom:0;text-transform:none;letter-spacing:.02em;font-size:12.5px}
+.c-fx .ref{flex:none;width:64px;padding:10px 12px;border-right:1px solid #2C2C2C;color:#FFFFFF}
+.c-fx .fx{flex:none;padding:10px 12px;border-right:1px solid #2C2C2C;color:#7C7C7C;font-style:italic}
+.c-fx .val{padding:10px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;color:#EDEDED}
+.c-scroll{overflow-x:auto;border:1px solid #2C2C2C}
+.grid{
+  position:relative;display:grid;min-width:860px;
+  grid-template-columns:46px minmax(250px,2.4fr) repeat(4,minmax(120px,1fr));
+  font-family:var(--mono);font-size:13px;line-height:1.3;font-variant-numeric:tabular-nums;
+}
+.grid .c{
+  padding:13px 14px;border-right:1px solid #262626;border-bottom:1px solid #262626;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:43px;cursor:cell;
+  transition:background .12s ease,color .12s ease;
+}
+.grid .c.num{text-align:right}
+.grid .c.hd{color:#7C7C7C;text-align:center;font-size:11px;letter-spacing:.1em;cursor:default;background:#111111}
+.grid .c.hd.hot{color:#FFFFFF;background:#1E1E1E}
+.grid .c.th{color:#9C9C9C;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.grid .c.ind{padding-left:34px;color:#C9C9C9}
+.grid .c.sub{border-top:1px solid #6A6A6A;color:#FFFFFF;font-weight:500}
+.grid .c.tot{border-top:1px solid #FFFFFF;border-bottom:3px double #FFFFFF;color:#FFFFFF;font-weight:500}
+.grid .c:hover:not(.hd){background:#1A1A1A}
+.grid .c.sel{box-shadow:inset 0 0 0 1.5px #FFFFFF}
+.grid .c.active{background:#FFFFFF;color:#0A0A0A}
+.grid .c.flag{box-shadow:inset 0 0 0 1.5px #FFFFFF;color:#FFFFFF;font-weight:500}
+.grid .c.done{background:#FFFFFF;color:#0A0A0A;font-weight:500}
+.grid::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:64px;pointer-events:none;opacity:0;
+  background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.09) 85%,rgba(255,255,255,.5) 100%);
+}
+.console.running .grid::after{opacity:1;animation:scan 2.6s linear infinite}
+@keyframes scan{from{transform:translateY(-64px)}to{transform:translateY(600px)}}
+.c-log{color:#C9C9C9;text-transform:none;letter-spacing:.02em;font-size:12.5px;min-width:0;flex:1 1 320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-log::after{content:"";display:inline-block;width:8px;height:14px;margin-left:6px;vertical-align:-2px;background:#EDEDED;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.c-what{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;padding:18px 14px 4px;color:#9C9C9C}
+.c-what input[type=range]{flex:1 1 220px;max-width:420px;height:22px;background:transparent;-webkit-appearance:none;appearance:none;cursor:ew-resize}
+.c-what input[type=range]::-webkit-slider-runnable-track{height:2px;background:#6A6A6A}
+.c-what input[type=range]::-moz-range-track{height:2px;background:#6A6A6A}
+.c-what input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:22px;margin-top:-10px;background:#FFFFFF;border:0;border-radius:0}
+.c-what input[type=range]::-moz-range-thumb{width:14px;height:22px;background:#FFFFFF;border:0;border-radius:0}
+.c-what input[type=range]:focus-visible{outline:2px solid #FFFFFF;outline-offset:4px}
+.c-whatval{color:#FFFFFF;min-width:5ch;text-align:right;font-variant-numeric:tabular-nums}
+.c-what button,.c-btns button{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  padding:10px 14px;border-radius:0;border:1px solid #6A6A6A;background:transparent;color:#EDEDED;
+  transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.c-what button:hover{background:#FFFFFF;color:#0A0A0A;border-color:#FFFFFF}
+.c-btns{display:flex;gap:8px}
+.c-btns button{
+  font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  padding:10px 14px;border-radius:0;border:1px solid #6A6A6A;background:transparent;color:#EDEDED;
+  transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.c-btns button:hover{background:#FFFFFF;color:#0A0A0A;border-color:#FFFFFF}
+
+/* section frame */
+.sec{padding-block:clamp(72px,10vw,150px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px 64px;align-items:end;margin-bottom:clamp(36px,5vw,64px)}
+h2{font-size:clamp(2.1rem,6.2vw,5.2rem);line-height:.98;letter-spacing:-.05em;text-wrap:balance}
+.sec-head p{color:var(--grey-1);max-width:44ch}
+.sec-head .mono{display:block;margin-bottom:18px}
+
+/* 01 on paper: the ledger */
+.ledger{border-top:2px solid var(--ink)}
+.cols,.rowbtn{
+  display:grid;
+  grid-template-columns:64px minmax(0,3fr) minmax(0,2fr) 28px;
+  gap:0 24px;align-items:center;
+}
+.cols{padding-block:12px;border-bottom:1px solid var(--hair)}
+.row{border-bottom:1px solid var(--hair)}
+.rowbtn{
+  width:100%;text-align:left;background:none;border:0;color:inherit;
+  padding:26px 0;transition:background .18s ease,color .18s ease,padding .18s ease;
+}
+.rowbtn:hover,.rowbtn[aria-expanded="true"]{background:var(--ink);color:var(--paper);padding-inline:20px}
+.rowbtn .ref{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--grey-2)}
+.rowbtn .acct{font-size:clamp(1.3rem,2.6vw,2.1rem);line-height:1.1;letter-spacing:-.035em;font-weight:500}
+.rowbtn .state{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.rowbtn .state::before{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;flex:none}
+.rowbtn[aria-expanded="true"] .state::before{background:currentColor}
+.sign{position:relative;width:14px;height:14px;justify-self:end}
+.sign::before,.sign::after{content:"";position:absolute;left:0;top:6.5px;width:14px;height:1.5px;background:currentColor;transition:transform .2s ease}
+.sign::after{transform:rotate(90deg)}
+.rowbtn[aria-expanded="true"] .sign::after{transform:rotate(0)}
+.panel{
+  display:grid;grid-template-columns:64px minmax(0,3fr) minmax(0,2fr) 28px;gap:0 24px;
+  padding:26px 20px 34px;background:var(--wash);
+}
+.panel .under{grid-column:2;font-size:17px;line-height:1.55;max-width:46ch}
+.panel .left{grid-column:3;font-size:17px;line-height:1.45;font-weight:500;letter-spacing:-.015em}
+.panel .mono{display:block;margin-bottom:8px;color:var(--grey-2)}
+.ledger-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;padding-top:16px}
+.ledger-foot .rule{flex:1 1 100%;height:9px;border-bottom:3px double var(--ink);margin-bottom:6px}
+.linkbtn{background:none;border:0;padding:0;color:var(--ink);border-bottom:1px solid var(--ink)}
+
+.panel .what{grid-column:2 / span 2;font-size:18px;line-height:1.55;max-width:58ch}
+
+/* proof strip */
+.strip-sec{border-block:1px solid var(--hair)}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.strip > div{padding:36px 28px 40px 0}
+.strip > div + div{padding-left:28px;border-left:1px solid var(--hair)}
+.strip .fig{font-size:clamp(2rem,4.4vw,3.6rem);line-height:1;letter-spacing:-.055em;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.strip .cap{margin-top:12px;font-size:15px;line-height:1.5;color:var(--grey-1);max-width:26ch}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
+.cards article{padding:28px 32px 8px 0}
+.cards article + article{padding-left:32px;border-left:1px solid var(--hair)}
+.cards h3{margin-top:16px;font-size:clamp(1.4rem,2.4vw,1.9rem);letter-spacing:-.035em;line-height:1.1;text-wrap:balance}
+.cards p{margin-top:14px;font-size:16px;line-height:1.62;color:var(--grey-1);max-width:36ch}
+
+/* 02 cash: the one black room */
+.dark{background:var(--ink);color:var(--paper)}
+.dark .dim{color:#9C9C9C}
+.cash-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 32px;margin-bottom:clamp(28px,4vw,56px)}
+.cash-label{font-size:clamp(1.15rem,2.2vw,1.7rem);letter-spacing:-.025em;line-height:1.25;max-width:26ch;min-height:2.5em}
+.cash-fig{
+  font-size:clamp(3.2rem,16.5vw,15.5rem);line-height:.88;letter-spacing:-.07em;font-weight:500;
+  font-variant-numeric:tabular-nums;margin-block:clamp(8px,1.5vw,20px) clamp(24px,3vw,44px);
+  white-space:nowrap;
+}
+.cash-foot{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:28px 64px;align-items:end}
+.cash-note{font-size:17px;line-height:1.55;color:#C9C9C9;max-width:46ch;min-height:4.7em}
+.cash-ctl{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
+.pips{display:flex;gap:8px}
+.pips i{display:block;width:56px;height:3px;background:#4A4A4A;transition:background .2s ease}
+.pips i[data-on="1"]{background:var(--paper)}
+.btn{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  padding:16px 24px;border-radius:0;border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+  transition:background .15s ease,color .15s ease;
+}
+.btn:hover{background:var(--paper);color:var(--ink)}
 .btn:disabled{opacity:.55;cursor:default}
-.hint{font-size:13.5px;color:#A8A8A8;max-width:36ch}
-.out{border:1px solid #6B6B6B;padding:22px 24px}
-.out pre{
-  margin:12px 0 18px;white-space:pre-wrap;word-break:break-word;
-  font-family:var(--body);font-size:15.5px;line-height:1.6;color:var(--paper);
+.dark .btn{border-color:var(--paper);background:var(--paper);color:var(--ink)}
+.dark .btn:hover{background:var(--ink);color:var(--paper)}
+
+/* 03 the close calendar */
+.switch{display:inline-flex;border:1px solid var(--ink)}
+.switch button{
+  font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;
+  padding:12px 20px;border:0;background:var(--paper);color:var(--ink);border-radius:0;
 }
-.direct{border-top:1px solid #6B6B6B;padding-top:24px}
-.direct .addr{
-  margin-top:14px;
-  font-family:var(--display);
-  font-size:clamp(1.35rem,2.6vw,1.8rem);
-  line-height:1.2;
-  word-break:break-word;
-  user-select:all;
+.switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.days{display:grid;grid-template-columns:repeat(15,minmax(0,1fr));gap:6px;margin-top:28px}
+.day{
+  aspect-ratio:1/1.25;display:flex;align-items:flex-end;justify-content:flex-start;padding:10px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+  transition:background .35s ease,color .35s ease,border-color .35s ease;
 }
-.direct .note{margin-top:14px;font-size:14.5px;line-height:1.6;color:#A8A8A8;max-width:38ch}
+.days[data-mode="after"] .day[data-late="1"]{background:var(--paper);color:var(--hair);border-color:var(--hair)}
+.close-foot{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:24px 64px;align-items:start;margin-top:32px}
+.close-fig{font-size:clamp(2.4rem,7vw,5.6rem);line-height:.95;letter-spacing:-.055em;font-weight:500;font-variant-numeric:tabular-nums}
+.close-cap{color:var(--grey-1);max-width:44ch;min-height:4.8em}
+
+/* 04 engagement */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
+.step{padding:28px 32px 8px 0}
+.step + .step{padding-left:32px;border-left:1px solid var(--hair)}
+.step .n{font-size:clamp(3rem,7vw,6rem);line-height:.9;letter-spacing:-.06em;font-weight:500;color:var(--hair)}
+.step h3{margin-top:22px;font-size:clamp(1.4rem,2.4vw,1.9rem);letter-spacing:-.035em;line-height:1.1}
+.step p{margin-top:14px;font-size:16px;line-height:1.62;color:var(--grey-1);max-width:36ch}
+
+/* 05 about */
+.about{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px 64px;align-items:start}
+.about .big{font-size:clamp(1.7rem,4vw,3.2rem);line-height:1.08;letter-spacing:-.045em;font-weight:500;text-wrap:balance}
+.about .big span{color:var(--grey-2)}
+.about .txt{display:flex;flex-direction:column;gap:18px;color:var(--grey-1)}
+.about .txt b{color:var(--ink);font-weight:500}
+
+/* 06 the offer */
+.offer-wrap{border-top:2px solid var(--ink)}
+.offer{font-size:clamp(2.2rem,7.4vw,6.6rem);line-height:.96;letter-spacing:-.055em;font-weight:500;text-wrap:balance}
+.offer span{color:var(--grey-2)}
+.offer-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px 64px;align-items:start;margin-top:clamp(40px,6vw,80px)}
+form{display:flex;flex-direction:column;gap:28px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field label{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--grey-2)}
+.field input,.field textarea{
+  width:100%;font-family:var(--body);font-size:18px;line-height:1.45;letter-spacing:-.01em;color:var(--ink);
+  background:transparent;border:0;border-bottom:1px solid var(--ink);border-radius:0;padding:8px 0;
+}
+.field textarea{resize:vertical;min-height:96px}
+.field input:focus,.field textarea:focus{outline:0;border-bottom-width:2px;padding-bottom:7px}
+.field .err{font-size:13.5px;font-weight:500}
+.field[data-bad="1"] input,.field[data-bad="1"] textarea{border-bottom-style:dashed}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.hint{font-size:14px;color:var(--grey-1);max-width:34ch}
+.out{margin-top:30px;border:1px solid var(--ink);padding:22px 24px}
+.out pre{margin:12px 0 18px;white-space:pre-wrap;word-break:break-word;font-family:var(--body);font-size:16px;line-height:1.55}
+.btn.ghost{background:var(--paper);color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.direct{border-top:1px solid var(--hair);padding-top:24px}
+.direct .addr{margin-top:14px;font-size:clamp(1.4rem,2.6vw,2rem);letter-spacing:-.035em;font-weight:500;line-height:1.15;word-break:break-word;user-select:all}
+.direct p.note{margin-top:14px;font-size:15px;color:var(--grey-1);max-width:38ch}
 .direct .btn{margin-top:22px}
 
-footer .sheet{
-  display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;
-  padding-block:26px;
-  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--grey-2);
+footer{border-top:1px solid var(--hair)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-block:26px;color:var(--grey-2)}
+
+@media (max-width:920px){
+  .hero-foot,.sec-head,.cash-foot,.close-foot,.about,.offer-grid{grid-template-columns:minmax(0,1fr)}
+  .hero-foot .scroll{display:none}
+  .steps,.cards{grid-template-columns:minmax(0,1fr)}
+  .cards article{padding:26px 0 30px}
+  .cards article + article{padding-left:0;border-left:0;border-top:1px solid var(--hair)}
+  .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .strip > div{padding:28px 20px 30px 0}
+  .strip > div + div{padding-left:0;border-left:0}
+  .strip > div:nth-child(even){padding-left:20px;border-left:1px solid var(--hair)}
+  .strip > div:nth-child(n+3){border-top:1px solid var(--hair)}
+  .step{padding:26px 0 30px}
+  .step + .step{padding-left:0;border-left:0;border-top:1px solid var(--hair)}
+  .nav-links a:not(.pill){display:none}
 }
-
-.entry .term,.rail .num,.three h3,.left,.step h3,.direct .addr{letter-spacing:-.025em}
-.left{font-size:18px;line-height:1.4}
-.three h3{font-size:22px}
-.step h3{font-size:23px}
-
-[hidden]{display:none!important}
-
-@media (max-width:900px){
-  .hero{grid-template-columns:minmax(0,1fr);align-items:start}
-  .sec{grid-template-columns:minmax(0,1fr)}
-  .rail{flex-direction:row;align-items:baseline;gap:16px}
-  .rail .num{font-size:32px}
-  .three{grid-template-columns:minmax(0,1fr);gap:32px}
-  .about-grid{grid-template-columns:minmax(0,1fr)}
-  .band-grid{grid-template-columns:minmax(0,1fr)}
-}
-@media (max-width:640px){
+@media (max-width:680px){
   body{font-size:16.5px}
-  .mast{padding-block:20px}
-  .nav a:not(.cta){display:none}
-  .trow{grid-template-columns:minmax(0,1fr)}
-  .trow.head{display:none}
-  .trow > div{padding:18px 0 4px}
-  .trow > div + div{padding:6px 0 20px;border-left:0}
-  .trow .tag{
-    display:block;margin-bottom:6px;
-    font-family:var(--mono);font-size:10.5px;font-weight:500;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--grey-2);
-  }
-  .step{grid-template-columns:44px minmax(0,1fr);gap:0 14px}
+  .cols{display:none}
+  .rowbtn{grid-template-columns:minmax(0,1fr) 22px;gap:8px 16px;padding:22px 0}
+  .rowbtn .ref{display:none}
+  .rowbtn .state{grid-column:1;grid-row:2}
+  .rowbtn .sign{grid-row:1 / span 2}
+  .rowbtn:hover,.rowbtn[aria-expanded="true"]{padding-inline:14px}
+  .panel{grid-template-columns:minmax(0,1fr);gap:20px;padding:22px 14px 26px}
+  .panel .under,.panel .left,.panel .what{grid-column:1}
+  .days{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .day{aspect-ratio:1/1}
   .pair{grid-template-columns:minmax(0,1fr)}
+  .pips i{width:40px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *{transition:none!important}
+  *{transition:none!important;animation:none!important}
+  .ticker .track{transform:none}
 }
 </style>
 </head>
 <body>
+<div id="bar" aria-hidden="true"></div>
 
-<header class="sheet">
-  <div class="mast">
+<header class="nav">
+  <div class="wrap">
     <a class="wordmark" href="#top">Hard Close</a>
-    <nav class="nav" aria-label="Sections">
-      <a href="#standard">The standard</a>
-      <a href="#record">The record</a>
+    <nav class="nav-links mono" aria-label="Sections">
+      <a href="#work">What I do</a>
+      <a href="#quarterback">Quarterback</a>
       <a href="#engagement">Engagement</a>
-      <a href="#about">About</a>
-      <a class="cta" href="#start">Start here</a>
+      <a href="#approach">How I work</a>
+      <a class="pill" href="#start">Ninety minutes</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
 
-  <div class="sheet">
-    <div class="hero">
-      <div>
-        <span class="label">Fractional controller</span>
-        <h1>Books that hold up when <em>someone else</em> opens them.</h1>
-        <p class="lead">Hard Close is a controller practice for companies with a raise, an audit or a sale ahead of them. <strong>I run the close, the cash and the balance sheet</strong>, so that the numbers you hand over are the numbers that survive the questions.</p>
+  <section class="hero">
+    <div class="wrap">
+      <div class="kicker mono dim">
+        <span>Fractional controller</span>
+        <span>Close, AR, AP, cash flow, reporting</span>
       </div>
-      <aside class="entry" aria-label="Definition of hard close">
-        <p class="term">hard close</p>
-        <p class="pos">noun</p>
-        <p class="def">The books closed, reconciled and tied to source on a fixed day every month, to a standard that an investor, an auditor or a buyer could inspect without notice.</p>
-        <p class="origin"><span>Origin</span>A rule I worked under for years inside large finance teams, where the close had a day and the day did not move.</p>
-      </aside>
+      <h1>
+        <span class="l1">Your books balance.</span>
+        <span class="l2" id="ink">That does not make them right.</span>
+      </h1>
+      <div class="hero-foot">
+        <div class="scroll mono"><i></i>Scroll, and it fills in</div>
+        <p class="lead"><b>I come in as your controller and own the books.</b> <span>The close, receivables, payables, cash flow and the reporting package, run by one senior person who works the numbers through with you.</span></p>
+      </div>
     </div>
-  </div>
-
-  <div class="sheet">
-
-    <section class="sec" id="standard">
-      <div class="rail">
-        <span class="num">01</span>
-        <span class="label">The standard</span>
+    <div class="ticker mono" aria-hidden="true">
+      <div class="track">
+        <div class="set"><span>Books closed in five days</span><span>Receivables</span><span>Payables</span><span>Cash flow</span><span>Reporting packages</span><span>Ownership of the books</span><span>A financial quarterback</span></div>
+        <div class="set"><span>Books closed in five days</span><span>Receivables</span><span>Payables</span><span>Cash flow</span><span>Reporting packages</span><span>Ownership of the books</span><span>A financial quarterback</span></div>
       </div>
-      <div>
-        <h2>Three things the books should do, every month.</h2>
-        <p class="intro">Most companies buy accounting at the lowest price available and find out what that bought them in the week it matters. These are the three things I build so that week is uneventful.</p>
+    </div>
+  </section>
 
-        <div class="three">
-          <article>
-            <span class="label">The close</span>
-            <h3>Finish on a calendar</h3>
-            <p>The close has a date, a checklist and an owner, and it finishes on the same day each month whether or not anyone is chasing it. I have taken a fifteen-day close down to five by writing the work down as it was done and putting it on a schedule.</p>
-          </article>
-          <article>
-            <span class="label">The cash</span>
-            <h3>Say where the money is</h3>
-            <p>A cash file built from a vendor budget and checked against the bank every day, so the number you plan around in the morning is the number that is actually there. It gets built first, because it is the one report that changes a decision you are making today.</p>
-          </article>
-          <article>
-            <span class="label">The balance sheet</span>
-            <h3>Stand up to inspection</h3>
-            <p>Every account reconciled and tied to a source document, so that diligence, an audit or a lender's review becomes a matter of opening the file. Clean books shorten that process, and the weeks saved are weeks spent running the company.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" id="record">
-      <div class="rail">
-        <span class="num">02</span>
-        <span class="label">The record</span>
-      </div>
-      <div>
-        <h2>What I found, and what I left.</h2>
-        <p class="intro">Each line is a situation I walked into and what it looked like when I was done. The figures are mine.</p>
-
-        <div class="taccount" role="table" aria-label="What was found and what was left">
-          <div class="trow head" role="row">
-            <div class="label" role="columnheader">Found</div>
-            <div class="label" role="columnheader">Left</div>
-          </div>
-
-          <div class="trow" role="row">
-            <div class="found" role="cell"><span class="tag">Found</span>A month-end close that took fifteen days.</div>
-            <div class="left" role="cell"><span class="tag">Left</span>Five days, on a schedule.</div>
-          </div>
-          <div class="trow" role="row">
-            <div class="found" role="cell"><span class="tag">Found</span>Twelve months of books untouched, with an investor meeting on the calendar.</div>
-            <div class="left" role="cell"><span class="tag">Left</span>The full year rebuilt from source, ready the week of the meeting.</div>
-          </div>
-          <div class="trow" role="row">
-            <div class="found" role="cell"><span class="tag">Found</span>Eighteen months of payroll that had never been recorded, discovered in the middle of an audit.</div>
-            <div class="left" role="cell"><span class="tag">Left</span>Traced, booked and reconciled in full.</div>
-          </div>
-          <div class="trow" role="row">
-            <div class="found" role="cell"><span class="tag">Found</span>$3M sitting in the wrong place on a balance sheet that had balanced the whole time.</div>
-            <div class="left" role="cell"><span class="tag">Left</span>Traced and reclassified.</div>
-          </div>
-          <div class="trow" role="row">
-            <div class="found" role="cell"><span class="tag">Found</span>A CEO planning around $1.2M of available cash, three days before payroll.</div>
-            <div class="left" role="cell"><span class="tag">Left</span>The real figure on his desk: $600K in the account, $590K already approved to go out, about $10K of headroom.</div>
-          </div>
-          <div class="trow" role="row">
-            <div class="found" role="cell"><span class="tag">Found</span>Three cloud subscriptions billing $10K a month each.</div>
-            <div class="left" role="cell"><span class="tag">Left</span>One subscription, and $20K a month back.</div>
-          </div>
-          <div class="trow" role="row">
-            <div class="found" role="cell"><span class="tag">Found</span>Two returns due with four days of runway.</div>
-            <div class="left" role="cell"><span class="tag">Left</span>Both filed from abroad, with no penalties.</div>
-          </div>
-          <div class="close" aria-hidden="true"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" id="engagement">
-      <div class="rail">
-        <span class="num">03</span>
-        <span class="label">Engagement</span>
-      </div>
-      <div>
-        <h2>How it starts, and how it runs.</h2>
-
-        <div class="steps">
-          <div class="step">
-            <span class="rn">01</span>
-            <div>
-              <h3>Ninety minutes</h3>
-              <p>You send read access to the books and give me ninety minutes. I tell you what I see, whether or not you hire me, and if there is nothing worth telling you I will say that.</p>
-            </div>
-          </div>
-          <div class="step">
-            <span class="rn">02</span>
-            <div>
-              <h3>The cleanup</h3>
-              <p>Whatever the review turns up gets fixed as a finite project with a defined scope: reconciliations brought current, unrecorded activity booked, the balance sheet tied out, and the procedures written down while the work is being done.</p>
-            </div>
-          </div>
-          <div class="step">
-            <span class="rn">03</span>
-            <div>
-              <h3>The close</h3>
-              <p>From there I run the function as your controller on a flat monthly retainer, which covers the close, the cash file, the reporting package, and the audit or diligence when it comes. It is built so that the day you no longer need someone at my level, you can hand it over without anything breaking.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="sec" id="about">
-      <div class="rail">
-        <span class="num">04</span>
-        <span class="label">About</span>
-      </div>
-      <div>
-        <p class="pull">Balancing and being correct are different things, and the gap only shows when someone goes looking.</p>
-
-        <div class="about-grid">
-          <p><strong>I am Robert, and I have spent fifteen years in corporate accounting and controllership</strong>, most of it from inside the company. That includes running full-cycle accounting for portfolios of companies at once and managing the offshore teams that do the production work, which is how I know what that model does well and where it stops.</p>
-          <p><strong>My job is that the books close, the accounts reconcile and the cash is known</strong>, so that when someone else audits them they hold up without a scramble. What you are buying is somebody with the standing to stop and question a number.</p>
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-  <section class="band" id="start">
-    <div class="sheet">
-      <span class="label">05 &nbsp; Start here</span>
-      <p class="offer">Send me read access to your books and give me ninety minutes. I will tell you what I see, <em>whether or not you hire me.</em></p>
-
-      <div class="band-grid">
+  <!-- 01 -->
+  <section class="sec" id="work">
+    <div class="wrap">
+      <div class="sec-head">
         <div>
-          <form id="contact" novalidate>
-            <div class="pair">
-              <div class="field" id="w-name">
-                <label for="f-name">Name</label>
-                <input id="f-name" name="name" type="text" autocomplete="name">
-              </div>
-              <div class="field" id="w-company">
-                <label for="f-company">Company</label>
-                <input id="f-company" name="company" type="text" autocomplete="organization">
-              </div>
-            </div>
-            <div class="field" id="w-email">
-              <label for="f-email">Email</label>
-              <input id="f-email" name="email" type="email" autocomplete="email">
-              <span class="err" id="e-email" hidden>Add an email address so I can reply.</span>
-            </div>
-            <div class="field" id="w-message">
-              <label for="f-message">What is coming up, and where the books are today</label>
-              <textarea id="f-message" name="message" rows="4"></textarea>
-              <span class="err" id="e-message" hidden>A sentence is enough.</span>
-            </div>
-            <div class="actions">
-              <input type="text" id="f-honey" name="_honey" tabindex="-1" autocomplete="off" hidden>
-              <button class="btn" type="submit" id="f-send">Send message</button>
-              <span class="hint">This goes straight to my inbox, and I reply from robert@hardclose.io.</span>
-            </div>
-          </form>
+          <span class="mono dim">01 &nbsp; What I do</span>
+          <h2>Six things, every month.</h2>
+        </div>
+        <p>This is the work I take on as your controller, and it runs on the same schedule every month. Open a line to see what it means in practice.</p>
+      </div>
 
-          <div class="out" id="out" hidden style="margin-top:30px">
-            <span class="label" id="out-head">Copied to your clipboard</span>
-            <pre id="out-text"></pre>
-            <div class="actions" id="out-actions">
-              <button class="btn ghost" id="out-copy" type="button">Copy again</button>
-              <a class="btn ghost" id="out-mail" href="mailto:robert@hardclose.io" style="text-decoration:none">Open in email</a>
-            </div>
+      <div class="ledger">
+        <div class="cols mono dim" aria-hidden="true">
+          <span>Ref</span><span>The work</span><span>What you get</span><span></span>
+        </div>
+
+        <div class="row">
+          <button class="rowbtn" type="button" aria-expanded="true" aria-controls="p1" id="r1">
+            <span class="ref">001</span><span class="acct">The close</span><span class="state">Closed in five days</span><span class="sign" aria-hidden="true"></span>
+          </button>
+          <div class="panel" id="p1">
+            <div class="what">The books close on day five, every month, on a written schedule. Every balance sheet account is reconciled and tied to a source document before the month is called done.</div>
           </div>
         </div>
 
-        <div class="direct">
-          <span class="label">Or write directly</span>
-          <p class="addr" id="addr">robert@hardclose.io</p>
-          <p class="note">There is no deck and no discovery call before the discovery call. A few lines about what is ahead of you is enough to start.</p>
-          <button class="btn ghost" id="addr-copy" type="button">Copy address</button>
+        <div class="row">
+          <button class="rowbtn" type="button" aria-expanded="false" aria-controls="p2" id="r2">
+            <span class="ref">002</span><span class="acct">Receivables</span><span class="state">What you are owed</span><span class="sign" aria-hidden="true"></span>
+          </button>
+          <div class="panel" id="p2" hidden>
+            <div class="what">Invoices go out on time, what is outstanding gets followed up, and the receivables balance ties to the ledger, so you can see the cash that is coming and when.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="rowbtn" type="button" aria-expanded="false" aria-controls="p3" id="r3">
+            <span class="ref">003</span><span class="acct">Payables</span><span class="state">What you owe</span><span class="sign" aria-hidden="true"></span>
+          </button>
+          <div class="panel" id="p3" hidden>
+            <div class="what">Every bill is read line by line before it is approved, paid on a schedule and recorded in the right period. This is where duplicate subscriptions and wrong charges get caught.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="rowbtn" type="button" aria-expanded="false" aria-controls="p4" id="r4">
+            <span class="ref">004</span><span class="acct">Cash flow</span><span class="state">Known every morning</span><span class="sign" aria-hidden="true"></span>
+          </button>
+          <div class="panel" id="p4" hidden>
+            <div class="what">A cash file built from a vendor budget and checked against the bank every day, so the number you plan around is the number that is actually there.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="rowbtn" type="button" aria-expanded="false" aria-controls="p5" id="r5">
+            <span class="ref">005</span><span class="acct">Reporting packages</span><span class="state">Ready to forward</span><span class="sign" aria-hidden="true"></span>
+          </button>
+          <div class="panel" id="p5" hidden>
+            <div class="what">A monthly package you can send to your board, your investors or your lender as it is, with the lines that moved explained before anyone has to ask.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="rowbtn" type="button" aria-expanded="false" aria-controls="p6" id="r6">
+            <span class="ref">006</span><span class="acct">Ownership of the books</span><span class="state">One person answerable</span><span class="sign" aria-hidden="true"></span>
+          </button>
+          <div class="panel" id="p6" hidden>
+            <div class="what">The books have an owner. When an investor, an auditor or a lender has a question about a number, it comes to me and it gets answered from the file.</div>
+          </div>
+        </div>
+
+        <div class="ledger-foot mono">
+          <div class="rule" aria-hidden="true"></div>
+          <span class="dim">Run by one senior person</span>
+          <button class="linkbtn mono" type="button" id="open-all">Open every line</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec" id="quarterback" style="padding-top:0">
+    <div class="wrap">
+      <div class="about">
+        <p class="big">I am not only closing the books. <span>I am working the question with you.</span></p>
+        <div class="txt">
+          <span class="mono dim">02 &nbsp; Financial quarterback</span>
+          <p><b>The useful part of finance is having somebody who knows your numbers well enough to sit with you when a decision has a financial side.</b> A hire, a price change, a term sheet, a lender asking for something: I work out with you what it does to the cash and the books before you commit.</p>
+          <p><b>A quarterback calls the play and makes sure it gets run. He does not play every position.</b> When something belongs to your tax preparer, your auditor or your lawyer, I bring them in, hand them clean numbers and stay on it until it is answered. What I own is the books and the follow-through.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="strip-sec">
+    <div class="wrap">
+      <div class="strip">
+        <div><p class="fig">15 &rarr; 5</p><p class="cap">days to close the month</p></div>
+        <div><p class="fig">18 mo.</p><p class="cap">of payroll that had never been booked, found mid-audit and recorded</p></div>
+        <div><p class="fig">$3M</p><p class="cap">misclassified on a balance sheet, traced and corrected</p></div>
+        <div><p class="fig">12 mo.</p><p class="cap">of books rebuilt from source before an investor meeting</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec" id="engagement">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="mono dim">03 &nbsp; Engagement</span>
+          <h2>How it starts, and how it runs.</h2>
+        </div>
+        <p>There is no deck and no discovery call before the discovery call. It starts with me reading your books.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <p class="n">01</p>
+          <h3>Ninety minutes</h3>
+          <p>You send read access and give me ninety minutes. I tell you what I see, whether or not you hire me, and if there is nothing worth telling you I will say that.</p>
+        </div>
+        <div class="step">
+          <p class="n">02</p>
+          <h3>The cleanup</h3>
+          <p>Whatever turns up gets fixed as a finite project with a defined scope: reconciliations brought current, unrecorded activity booked, the balance sheet tied out, and the procedures written down while the work is being done.</p>
+        </div>
+        <div class="step">
+          <p class="n">03</p>
+          <h3>The monthly rhythm</h3>
+          <p>From there I run the function as your controller on a flat monthly retainer: the five-day close, receivables, payables, the cash file and the reporting package, plus the audit or diligence when it comes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec" id="approach" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="mono dim">04 &nbsp; How I work</span>
+          <h2>One senior person, fifteen years in the seat.</h2>
+        </div>
+        <p>I have spent fifteen years in corporate accounting and controllership, most of it from inside the company, including full-cycle accounting for portfolios of companies at once.</p>
+      </div>
+      <div class="cards">
+        <article>
+          <span class="mono dim">Who this is for</span>
+          <h3>A raise, an audit or a sale ahead</h3>
+          <p>Companies where something is coming that will put the numbers in front of someone else, and nobody senior owns them yet. Any sector.</p>
+        </article>
+        <article>
+          <span class="mono dim">Tools</span>
+          <h3>AI-enabled, read by me</h3>
+          <p>I use AI tools to get through the volume, the matching and the first pass over transactions and invoices, which is why the close can be fast without being careless. Nothing leaves my desk that I have not read myself.</p>
+        </article>
+        <article>
+          <span class="mono dim">Handover</span>
+          <h3>Built so you can replace me</h3>
+          <p>Everything is written down as it is done, so the function runs on a schedule and not on my memory. The day you no longer need someone at my level, you can hand it over without anything breaking.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec" id="start" style="padding-top:0">
+    <div class="wrap">
+      <div class="offer-wrap">
+        <p class="mono dim" style="padding-block:16px clamp(28px,4vw,52px)">05 &nbsp; Start here</p>
+        <p class="offer">Send me read access to your books and give me ninety minutes. <span>I will tell you what I see, whether or not you hire me.</span></p>
+
+        <div class="offer-grid">
+          <div>
+            <form id="contact" novalidate>
+              <div class="pair">
+                <div class="field" id="w-name">
+                  <label for="f-name">Name</label>
+                  <input id="f-name" name="name" type="text" autocomplete="name">
+                </div>
+                <div class="field" id="w-company">
+                  <label for="f-company">Company</label>
+                  <input id="f-company" name="company" type="text" autocomplete="organization">
+                </div>
+              </div>
+              <div class="field" id="w-email">
+                <label for="f-email">Email</label>
+                <input id="f-email" name="email" type="email" autocomplete="email">
+                <span class="err" id="e-email" hidden>Add an email address so I can reply.</span>
+              </div>
+              <div class="field" id="w-message">
+                <label for="f-message">What is coming up, and where the books are today</label>
+                <textarea id="f-message" name="message" rows="4"></textarea>
+                <span class="err" id="e-message" hidden>A sentence is enough.</span>
+              </div>
+              <div class="actions">
+                <input type="text" id="f-honey" name="_honey" tabindex="-1" autocomplete="off" hidden>
+                <button class="btn" type="submit" id="f-send">Send message</button>
+                <span class="hint">This goes straight to my inbox, and I reply from robert@hardclose.io.</span>
+              </div>
+            </form>
+
+            <div class="out" id="out" hidden>
+              <span class="mono dim" id="out-head">Sent</span>
+              <pre id="out-text"></pre>
+              <div class="actions" id="out-actions">
+                <button class="btn ghost" id="out-copy" type="button">Copy again</button>
+                <a class="btn ghost" id="out-mail" href="mailto:robert@hardclose.io" style="text-decoration:none">Open in email</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="direct">
+            <span class="mono dim">Or write directly</span>
+            <p class="addr" id="addr">robert@hardclose.io</p>
+            <p class="note">A few lines about what is ahead of you, a raise, an audit or a sale, is enough to start.</p>
+            <button class="btn ghost" id="addr-copy" type="button">Copy address</button>
+          </div>
         </div>
       </div>
     </div>
@@ -574,7 +630,7 @@ footer .sheet{
 </main>
 
 <footer>
-  <div class="sheet">
+  <div class="wrap mono">
     <span>Hard Close LLC</span>
     <span>Fractional controller</span>
     <span>&copy; 2026</span>
@@ -583,51 +639,105 @@ footer .sheet{
 
 <script>
 (function () {
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- scroll: progress bar and the headline inking in ---- */
+  var bar = document.getElementById("bar");
+  var ink = document.getElementById("ink");
+  var queued = false;
+  function onScroll() {
+    queued = false;
+    var y = window.scrollY || 0;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar) bar.style.transform = "scaleX(" + (h > 0 ? Math.min(Math.max(y / h, 0), 1) : 0) + ")";
+    if (ink) {
+      var span = Math.max(window.innerHeight * 0.55, 240);
+      ink.style.setProperty("--fill", Math.min(Math.max(y / span, 0), 1) * 100 + "%");
+    }
+  }
+  window.addEventListener("scroll", function () {
+    if (!queued) { queued = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+
+  /* ---- ledger rows ---- */
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".rowbtn"));
+  function setRow(btn, open) {
+    var panel = document.getElementById(btn.getAttribute("aria-controls"));
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (panel) panel.hidden = !open;
+  }
+  rows.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      setRow(btn, btn.getAttribute("aria-expanded") !== "true");
+      syncOpenAll();
+    });
+  });
+  var openAll = document.getElementById("open-all");
+  function allOpen() { return rows.every(function (b) { return b.getAttribute("aria-expanded") === "true"; }); }
+  function syncOpenAll() { if (openAll) openAll.textContent = allOpen() ? "Close every line" : "Open every line"; }
+  if (openAll) {
+    openAll.addEventListener("click", function () {
+      var target = !allOpen();
+      rows.forEach(function (b) { setRow(b, target); });
+      syncOpenAll();
+    });
+  }
+
+  /* ---- the close calendar ---- */
+  var days = document.getElementById("days");
+  var bBefore = document.getElementById("mode-before"), bAfter = document.getElementById("mode-after");
+  var closeFig = document.getElementById("close-fig"), closeCap = document.getElementById("close-cap");
+  var caps = {
+    before: "A fifteen-day close means the month is half over before anyone sees the last one, so every number arrives after the decision it was meant to inform.",
+    after: "The same close, finished on day five every month, because the work was written down as it was done and put on a schedule instead of a reminder. The ten days it gave back are days the numbers are still useful."
+  };
+  function setMode(mode) {
+    if (!days) return;
+    days.setAttribute("data-mode", mode);
+    bBefore.setAttribute("aria-pressed", mode === "before" ? "true" : "false");
+    bAfter.setAttribute("aria-pressed", mode === "after" ? "true" : "false");
+    closeFig.textContent = mode === "before" ? "Day 15" : "Day 5";
+    closeCap.textContent = caps[mode];
+  }
+  if (bBefore && bAfter) {
+    bBefore.addEventListener("click", function () { setMode("before"); });
+    bAfter.addEventListener("click", function () { setMode("after"); });
+  }
+
+  /* ---- clipboard ---- */
   function selectNode(el) {
     try {
-      var r = document.createRange();
-      r.selectNodeContents(el);
-      var s = window.getSelection();
-      s.removeAllRanges();
-      s.addRange(r);
+      var r = document.createRange(); r.selectNodeContents(el);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
       return true;
     } catch (e) { return false; }
   }
   function copy(text, ok, fail) {
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(ok, fail);
-      } else { fail(); }
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(ok, fail); }
+      else { fail(); }
     } catch (e) { fail(); }
   }
-
-  var addr = document.getElementById("addr");
-  var addrCopy = document.getElementById("addr-copy");
+  var addr = document.getElementById("addr"), addrCopy = document.getElementById("addr-copy");
   if (addr && addrCopy) {
     addrCopy.addEventListener("click", function () {
-      var done = function (word) {
-        addrCopy.textContent = word;
-        setTimeout(function () { addrCopy.textContent = "Copy address"; }, 1800);
-      };
-      copy(addr.textContent.trim(),
-        function () { done("Copied"); },
-        function () { done(selectNode(addr) ? "Selected" : "Select it above"); });
+      var done = function (w) { addrCopy.textContent = w; setTimeout(function () { addrCopy.textContent = "Copy address"; }, 1800); };
+      copy(addr.textContent.trim(), function () { done("Copied"); }, function () { done(selectNode(addr) ? "Selected" : "Select it above"); });
     });
   }
 
+  /* ---- the form ---- */
   var form = document.getElementById("contact");
-  var out = document.getElementById("out");
-  var outText = document.getElementById("out-text");
-  var outHead = document.getElementById("out-head");
-  var outCopy = document.getElementById("out-copy");
-  var outMail = document.getElementById("out-mail");
-
+  var out = document.getElementById("out"), outText = document.getElementById("out-text");
+  var outHead = document.getElementById("out-head"), outCopy = document.getElementById("out-copy");
+  var outMail = document.getElementById("out-mail"), outActions = document.getElementById("out-actions");
   function mark(wrapId, errId, bad) {
     var w = document.getElementById(wrapId), e = document.getElementById(errId);
     if (w) w.setAttribute("data-bad", bad ? "1" : "0");
     if (e) e.hidden = !bad;
   }
-
   if (form) {
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
@@ -644,14 +754,12 @@ footer .sheet{
       if (badMessage) { document.getElementById("f-message").focus(); return; }
 
       var subject = company ? company + ", books" : "Books";
-      var bodyLines = [message, "", name];
-      if (company) bodyLines.push(company);
-      bodyLines.push(email);
-      var body = bodyLines.join("\n").replace(/\n{3,}/g, "\n\n");
+      var lines = [message, "", name];
+      if (company) lines.push(company);
+      lines.push(email);
+      var body = lines.join("\n").replace(/\n{3,}/g, "\n\n");
       var shown = "To: robert@hardclose.io\nSubject: " + subject + "\n\n" + body;
-
       var sendBtn = document.getElementById("f-send");
-      var outActions = document.getElementById("out-actions");
 
       function showSent() {
         outHead.textContent = "Sent";
@@ -661,12 +769,9 @@ footer .sheet{
         form.reset();
         out.scrollIntoView({ block: "nearest" });
       }
-
       function showFallback() {
         outText.textContent = shown;
-        outMail.setAttribute("href",
-          "mailto:robert@hardclose.io?subject=" + encodeURIComponent(subject) +
-          "&body=" + encodeURIComponent(body));
+        outMail.setAttribute("href", "mailto:robert@hardclose.io?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body));
         outActions.hidden = false;
         out.hidden = false;
         outHead.textContent = "This could not be sent from the page. Copy it into an email to robert@hardclose.io";
@@ -676,7 +781,6 @@ footer .sheet{
         out.scrollIntoView({ block: "nearest" });
       }
 
-      /* a filled honeypot is a bot: act as if it went through */
       if (document.getElementById("f-honey").value) { showSent(); return; }
 
       sendBtn.disabled = true;
@@ -689,13 +793,8 @@ footer .sheet{
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify({
-            name: name,
-            company: company,
-            email: email,
-            message: message,
-            _subject: "Hard Close site: " + subject,
-            _replyto: email,
-            _template: "table"
+            name: name, company: company, email: email, message: message,
+            _subject: "Hard Close site: " + subject, _replyto: email, _template: "table"
           })
         });
       } catch (e) { restore(); showFallback(); return; }
@@ -709,14 +808,10 @@ footer .sheet{
         .catch(function () { restore(); showFallback(); });
     });
   }
-
   if (outCopy) {
     outCopy.addEventListener("click", function () {
       copy(outText.textContent,
-        function () {
-          outCopy.textContent = "Copied";
-          setTimeout(function () { outCopy.textContent = "Copy again"; }, 1800);
-        },
+        function () { outCopy.textContent = "Copied"; setTimeout(function () { outCopy.textContent = "Copy again"; }, 1800); },
         function () { selectNode(outText); });
     });
   }
